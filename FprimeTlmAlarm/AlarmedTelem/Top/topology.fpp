@@ -33,6 +33,7 @@ module FprimeTlmAlarm {
     instance comDriver
     instance cmdSeq
     instance tlmSplitter
+    instance tlmAlarm
 
   # ----------------------------------------------------------------------
   # Pattern graph specifiers
@@ -59,7 +60,7 @@ module FprimeTlmAlarm {
 
     connections TlmSplit {
       tlmSplitter.TlmSend[0] -> CdhCore.tlmSend.TlmRecv
-      # tlmSplitter.TlmSend[1] -> tlmAlarm.TlmRecv
+      tlmSplitter.TlmSend[1] -> tlmAlarm.TlmRecv
     }
 
 

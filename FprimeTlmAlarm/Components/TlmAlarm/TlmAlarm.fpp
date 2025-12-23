@@ -1,6 +1,8 @@
 module FprimeTlmAlarm {
     @ Monitor Tlm Mnemonics Onboard
     queued component TlmAlarm {
+        # RX Tlm from the system (Likely a TlmSplitter)
+        async input port TlmRecv: Fw.Tlm
 
         # One sync and one async command/port are required for queued components
         # This should be overridden by the developers with useful commands/ports
@@ -14,17 +16,14 @@ module FprimeTlmAlarm {
         #### Uncomment the following examples to start customizing your component ####
         ##############################################################################
 
-        # @ Example async command
-        # async command COMMAND_NAME(param_name: U32)
-
         # @ Example telemetry counter
         # telemetry ExampleCounter: U64
 
         # @ Example event
         # event ExampleStateEvent(example_state: Fw.On) severity activity high id 0 format "State set to {}"
 
-        # @ Example port: receiving calls from the rate group
-        # sync input port run: Svc.Sched
+        @ Example port: receiving calls from the rate group
+        sync input port run: Svc.Sched
 
         # @ Example parameter
         # param PARAMETER_NAME: U32

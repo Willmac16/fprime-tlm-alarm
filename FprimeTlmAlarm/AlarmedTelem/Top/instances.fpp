@@ -50,6 +50,8 @@ module FprimeTlmAlarm {
   # Queued component instances
   # ----------------------------------------------------------------------
 
+  instance tlmAlarm: FprimeTlmAlarm.TlmAlarm base id 0x10020000 \
+    queue size Default.QUEUE_SIZE
 
   # ----------------------------------------------------------------------
   # Passive component instances
