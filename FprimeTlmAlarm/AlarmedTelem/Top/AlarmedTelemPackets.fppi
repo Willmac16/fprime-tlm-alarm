@@ -161,6 +161,30 @@ telemetry packets AlarmedTelemPackets {
     CdhCore.version.CustomVersion10
   }
 
+  packet TlmAlarmSeq id 38 group 2 {
+    tlmAlarmSeq.State
+    tlmAlarmSeq.SequencesSucceeded
+    tlmAlarmSeq.SequencesFailed
+    tlmAlarmSeq.SequencesCancelled
+    tlmAlarmSeq.StatementsDispatched
+    tlmAlarmSeq.StatementsFailed
+    tlmAlarmSeq.LastDirectiveError
+    tlmAlarmSeq.DirectiveErrorIndex
+    tlmAlarmSeq.DirectiveErrorId
+    tlmAlarmSeq.SeqPath
+    tlmAlarmSeq.Debug_ReachedEndOfFile
+    tlmAlarmSeq.Debug_NextStatementReadSuccess
+    tlmAlarmSeq.Debug_NextStatementOpcode
+    tlmAlarmSeq.Debug_NextCmdOpcode
+    tlmAlarmSeq.Debug_StackSize
+    tlmAlarmSeq.BreakpointInUse
+    tlmAlarmSeq.BreakpointIndex
+    tlmAlarmSeq.BreakOnlyOnceOnBreakpoint
+    tlmAlarmSeq.BreakBeforeNextLine
+    tlmAlarmSeq.PRM_STATEMENT_TIMEOUT_SECS
+    tlmAlarmSeq.PRM_FLAG_DEFAULT_EXIT_ON_CMD_FAIL
+  }
+
 } omit {
   CdhCore.cmdDisp.CommandErrors
 }

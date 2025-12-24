@@ -49,6 +49,9 @@ namespace PingEntries {
     namespace FprimeTlmAlarm_rateGroup2 {enum { WARN = 3, FATAL = 5 };}
     namespace FprimeTlmAlarm_rateGroup3 {enum { WARN = 3, FATAL = 5 };}
     namespace FprimeTlmAlarm_cmdSeq {enum { WARN = 3, FATAL = 5 };}
+    namespace FprimeTlmAlarm_tlmAlarmSeq {
+    enum { WARN = 3, FATAL = 5 };
+    }
 }  // namespace PingEntries
 
 // Definitions are placed within the same namespace as the FPP module that contains the topology.
