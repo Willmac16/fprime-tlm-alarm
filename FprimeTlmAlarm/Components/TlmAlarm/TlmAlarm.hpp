@@ -26,22 +26,58 @@ class TlmAlarm final : public TlmAlarmComponentBase {
 
   private:
     // ----------------------------------------------------------------------
-    // Handler implementations for commands
+    // Handler implementations for typed input ports
     // ----------------------------------------------------------------------
 
-    //! Handler implementation for command TODO_1
+    //! Handler implementation for TlmRecv
+    void TlmRecv_handler(FwIndexType portNum,  //!< The port number
+                         FwChanIdType id,      //!< Telemetry Channel ID
+                         Fw::Time& timeTag,    //!< Time Tag
+                         Fw::TlmBuffer& val    //!< Buffer containing serialized telemetry value
+                         ) override;
+
+    //! Handler implementation for paramMock
     //!
-    //! TODO
-    void TODO_1_cmdHandler(FwOpcodeType opCode,  //!< The opcode
-                           U32 cmdSeq            //!< The command sequence number
+    //! port for feeding channel comparison seq thresholds and receiving debounce/persistence
+    Fw::ParamValid paramMock_handler(FwIndexType portNum,  //!< The port number
+                                     FwPrmIdType id,       //!< Parameter ID
+                                     Fw::ParamBuffer& val  //!< Buffer containing serialized parameter value.
+                                                           //!< Unmodified if param not found.
+                                     ) override;
+
+    //! Handler implementation for run
+    //!
+    //! Example port: receiving calls from the rate group
+    void run_handler(FwIndexType portNum,  //!< The port number
+                     U32 context           //!< The call order
+                     ) override;
+
+    //! Handler implementation for seqDoneIn
+    //!
+    //! called when a sequence finishes running, either successfully or not
+    void seqDoneIn_handler(FwIndexType portNum,             //!< The port number
+                           FwOpcodeType opCode,             //!< Command Op Code
+                           U32 cmdSeq,                      //!< Command Sequence
+                           const Fw::CmdResponse& response  //!< The command response argument
                            ) override;
 
-    //! Handler implementation for command TODO_2
+    //! Handler implementation for seqStartIn
     //!
-    //! TODO
-    void TODO_2_cmdHandler(FwOpcodeType opCode,  //!< The opcode
-                           U32 cmdSeq            //!< The command sequence number
-                           ) override;
+    //! called when a sequence begins running
+    void seqStartIn_handler(FwIndexType portNum,            //!< The port number
+                            const Fw::StringBase& filename  //!< The sequence file
+                            ) override;
+
+    //! Handler implementation for tlmMock
+    //!
+    //! port for feeding channel comparison seq tlm values
+    Fw::TlmValid tlmMock_handler(FwIndexType portNum,  //!< The port number
+                                 FwChanIdType id,      //!< Telemetry Channel ID
+                                 Fw::Time& timeTag,    //!< Time Tag
+                                 Fw::TlmBuffer& val    //!< Buffer containing serialized telemetry value.
+                                                       //!< Size set to 0 if channel not found, or if no value
+                                                       //!< has been received for this channel yet.
+                                 ) override;
 };
 
 }  // namespace FprimeTlmAlarm

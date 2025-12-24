@@ -17,17 +17,34 @@ TlmAlarm ::TlmAlarm(const char* const compName) : TlmAlarmComponentBase(compName
 TlmAlarm ::~TlmAlarm() {}
 
 // ----------------------------------------------------------------------
-// Handler implementations for commands
+// Handler implementations for typed input ports
 // ----------------------------------------------------------------------
 
-void TlmAlarm ::TODO_1_cmdHandler(FwOpcodeType opCode, U32 cmdSeq) {
+void TlmAlarm ::TlmRecv_handler(FwIndexType portNum, FwChanIdType id, Fw::Time& timeTag, Fw::TlmBuffer& val) {
     // TODO
-    this->cmdResponse_out(opCode, cmdSeq, Fw::CmdResponse::OK);
 }
 
-void TlmAlarm ::TODO_2_cmdHandler(FwOpcodeType opCode, U32 cmdSeq) {
+Fw::ParamValid TlmAlarm ::paramMock_handler(FwIndexType portNum, FwPrmIdType id, Fw::ParamBuffer& val) {
+    return Fw::ParamValid::VALID;
+}
+
+void TlmAlarm ::run_handler(FwIndexType portNum, U32 context) {
     // TODO
-    this->cmdResponse_out(opCode, cmdSeq, Fw::CmdResponse::OK);
+}
+
+void TlmAlarm ::seqDoneIn_handler(FwIndexType portNum,
+                                  FwOpcodeType opCode,
+                                  U32 cmdSeq,
+                                  const Fw::CmdResponse& response) {
+    // TODO
+}
+
+void TlmAlarm ::seqStartIn_handler(FwIndexType portNum, const Fw::StringBase& filename) {
+    // TODO
+}
+
+Fw::TlmValid TlmAlarm ::tlmMock_handler(FwIndexType portNum, FwChanIdType id, Fw::Time& timeTag, Fw::TlmBuffer& val) {
+    return Fw::TlmValid::VALID;
 }
 
 }  // namespace FprimeTlmAlarm

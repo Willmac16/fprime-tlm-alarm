@@ -4,29 +4,29 @@ module FprimeTlmAlarm {
         # RX Tlm from the system (Likely a TlmSplitter)
         async input port TlmRecv: Fw.Tlm
 
-        # One sync and one async command/port are required for queued components
-        # This should be overridden by the developers with useful commands/ports
-        @ TODO
-        async command TODO_1 opcode 0
-
-        @ TODO
-        sync command TODO_2
-
-        ##############################################################################
-        #### Uncomment the following examples to start customizing your component ####
-        ##############################################################################
-
-        # @ Example telemetry counter
-        # telemetry ExampleCounter: U64
-
-        # @ Example event
-        # event ExampleStateEvent(example_state: Fw.On) severity activity high id 0 format "State set to {}"
-
         @ Example port: receiving calls from the rate group
         sync input port run: Svc.Sched
 
-        # @ Example parameter
-        # param PARAMETER_NAME: U32
+        ##############################################################################
+        #### Ports for interfacing w/ the FpySeq                                     #
+        ##############################################################################
+
+        # Mock getters
+        @ port for feeding channel comparison seq tlm values
+        guarded input port tlmMock: Fw.TlmGet
+
+        @ port for feeding channel comparison seq thresholds and receiving debounce/persistence
+        guarded input port paramMock: Fw.PrmGet
+
+        # Seq Commanding
+        @ port for requests to run sequences
+        output port seqRunOut: Svc.CmdSeqIn
+
+        @ called when a sequence begins running
+        guarded input port seqStartIn: Svc.CmdSeqIn
+
+        @ called when a sequence finishes running, either successfully or not
+        guarded input port seqDoneIn: Fw.CmdResponse
 
         ###############################################################################
         # Standard AC Ports: Required for Channels, Events, Commands, and Parameters  #
