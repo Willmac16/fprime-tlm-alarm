@@ -11,6 +11,13 @@
 
 namespace FprimeTlmAlarm {
 
+//! Struct for storing Tlm update
+struct TlmStruct {
+    FwChanIdType id;    //!< Telemetry Channel ID
+    Fw::Time timeTag;   //!< Time Tag
+    Fw::TlmBuffer val;  //!< Buffer containing serialized telemetry value
+};
+
 class TlmAlarm final : public TlmAlarmComponentBase {
   public:
     // ----------------------------------------------------------------------
@@ -78,6 +85,9 @@ class TlmAlarm final : public TlmAlarmComponentBase {
                                                        //!< Size set to 0 if channel not found, or if no value
                                                        //!< has been received for this channel yet.
                                  ) override;
+    // Member vars
+  private:
+    TlmStruct m_tlm;  //!< Struct Storing the current Tlm Update we are processing
 };
 
 }  // namespace FprimeTlmAlarm

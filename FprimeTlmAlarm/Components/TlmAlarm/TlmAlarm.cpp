@@ -21,7 +21,14 @@ TlmAlarm ::~TlmAlarm() {}
 // ----------------------------------------------------------------------
 
 void TlmAlarm ::TlmRecv_handler(FwIndexType portNum, FwChanIdType id, Fw::Time& timeTag, Fw::TlmBuffer& val) {
-    // TODO
+    // We pulled this channel update off of the queue
+
+    // Set the TlmBuffer that services requests to this
+    m_tlm.id = id;
+    m_tlm.timeTag = timeTag;
+    m_tlm.val = val;
+
+    // If a seq exists for this channel ID, lets try to call into it
 }
 
 Fw::ParamValid TlmAlarm ::paramMock_handler(FwIndexType portNum, FwPrmIdType id, Fw::ParamBuffer& val) {
@@ -44,6 +51,13 @@ void TlmAlarm ::seqStartIn_handler(FwIndexType portNum, const Fw::StringBase& fi
 }
 
 Fw::TlmValid TlmAlarm ::tlmMock_handler(FwIndexType portNum, FwChanIdType id, Fw::Time& timeTag, Fw::TlmBuffer& val) {
+    if (id != m_tlm.id) {
+        return Fw::TlmValid::INVALID;
+    }
+
+    timeTag = m_tlm.timeTag;
+    val = m_tlm.val;
+
     return Fw::TlmValid::VALID;
 }
 
