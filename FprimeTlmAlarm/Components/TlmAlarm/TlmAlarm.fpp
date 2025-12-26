@@ -1,4 +1,15 @@
 module FprimeTlmAlarm {
+
+    @ Comparison operator types for monitors
+    enum ComparisonOp {
+        GREATER_THAN = 0         @< >
+        GREATER_THAN_OR_EQUAL = 1 @< >=
+        LESS_THAN = 2            @< <
+        LESS_THAN_OR_EQUAL = 3   @< <=
+        EQUAL = 4                @< ==
+        NOT_EQUAL = 5            @< !=
+    }
+
     @ Monitor Tlm Mnemonics Onboard
     queued component TlmAlarm {
         # RX Tlm from the system (Likely a TlmSplitter)
@@ -8,25 +19,11 @@ module FprimeTlmAlarm {
         sync input port run: Svc.Sched
 
         ##############################################################################
-        #### Ports for interfacing w/ the FpySeq                                     #
+        #### Monitor Response Port                                                   #
         ##############################################################################
 
-        # Mock getters
-        @ port for feeding channel comparison seq tlm values
-        guarded input port tlmMock: Fw.TlmGet
-
-        @ port for feeding channel comparison seq thresholds and receiving debounce/persistence
-        guarded input port paramMock: Fw.PrmGet
-
-        # Seq Commanding
-        @ port for requests to run sequences
-        output port seqRunOut: Svc.CmdSeqIn
-
-        @ called when a sequence begins running
-        guarded input port seqStartIn: Svc.CmdSeqIn
-
-        @ called when a sequence finishes running, either successfully or not
-        guarded input port seqDoneIn: Fw.CmdResponse
+        @ Output port called when a monitor triggers
+        output port ResponseOut: [10] ResponseOut
 
         ###############################################################################
         # Standard AC Ports: Required for Channels, Events, Commands, and Parameters  #
@@ -48,6 +45,67 @@ module FprimeTlmAlarm {
 
         @Port to set the value of a parameter
         param set port prmSetOut
+
+        ###############################################################################
+        # Events                                                                      #
+        ###############################################################################
+
+        @ Monitor triggered alarm condition
+        event MonitorTriggered(
+            monitorId: U32 @< Monitor ID that triggered
+            channelId: U32 @< Telemetry channel ID
+        ) \
+        severity warning high \
+        format "Monitor {} triggered for channel {}"
+
+        @ Monitor successfully configured
+        event MonitorConfigured(
+            monitorId: U32 @< Monitor ID
+            channelId: U32 @< Telemetry channel ID
+        ) \
+        severity activity high \
+        format "Monitor {} configured for channel {}"
+
+        @ Monitor enabled
+        event MonitorEnabled(
+            monitorId: U32 @< Monitor ID
+        ) \
+        severity activity low \
+        format "Monitor {} enabled"
+
+        @ Monitor disabled
+        event MonitorDisabled(
+            monitorId: U32 @< Monitor ID
+        ) \
+        severity activity low \
+        format "Monitor {} disabled"
+
+        @ Monitor threshold updated
+        event ThresholdUpdated(
+            monitorId: U32 @< Monitor ID
+            threshold: F64  @< New threshold value
+        ) \
+        severity activity low \
+        format "Monitor {} threshold updated to {}"
+
+        @ Monitor configuration failed - max monitors reached
+        event ConfigurationFailed(
+            reason: string size 80 @< Failure reason
+        ) \
+        severity warning high \
+        format "Monitor configuration failed: {}"
+
+        ###############################################################################
+        # Telemetry Channels                                                         #
+        ###############################################################################
+
+        @ Number of active monitors
+        telemetry NumActiveMonitors: U32 \
+        format "{}"
+
+        @ Total monitor triggers
+        telemetry TotalTriggers: U32 \
+        format "{}"
 
     }
 }

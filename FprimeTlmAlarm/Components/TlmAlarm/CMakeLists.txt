@@ -16,6 +16,7 @@
 
 register_fprime_library(
     AUTOCODER_INPUTS
+        "${CMAKE_CURRENT_LIST_DIR}/ResponseOut.fpp"
         "${CMAKE_CURRENT_LIST_DIR}/TlmAlarm.fpp"
     SOURCES
         "${CMAKE_CURRENT_LIST_DIR}/TlmAlarm.cpp"

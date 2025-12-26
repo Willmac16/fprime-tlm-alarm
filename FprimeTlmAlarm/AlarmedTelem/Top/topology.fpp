@@ -35,7 +35,7 @@ module FprimeTlmAlarm {
     # TlmAlarm specifics
     instance tlmSplitter
     instance tlmAlarm
-    instance tlmAlarmSeq
+    # instance tlmAlarmSeq  # Not needed for direct monitoring approach
 
   # ----------------------------------------------------------------------
   # Pattern graph specifiers
@@ -65,16 +65,8 @@ module FprimeTlmAlarm {
       tlmSplitter.TlmSend[1] -> tlmAlarm.TlmRecv
     }
 
-    # TODO: Move this into a subtopology
-    # Wire tlmAlarm mocks into tlmAlarmSeq
-    connections AlarmedTelemSeq {
-      tlmAlarmSeq.getParam -> tlmAlarm.paramMock
-      tlmAlarmSeq.getTlmChan -> tlmAlarm.tlmMock
-
-      tlmAlarm.seqRunOut -> tlmAlarmSeq.seqRunIn
-      tlmAlarmSeq.seqStartOut -> tlmAlarm.seqStartIn
-      tlmAlarmSeq.seqDoneOut -> tlmAlarm.seqDoneIn
-    }
+    # Note: ResponseOut ports can be connected to custom handlers as needed
+    # Example: tlmAlarm.ResponseOut[0] -> customHandler.MonitorInput
 
     connections ComCcsds_CdhCore {
       # Core events and telemetry to communication queue
@@ -131,8 +123,6 @@ module FprimeTlmAlarm {
 
       # Process the queue of new tlm
       rateGroup1.RateGroupMemberOut[5] -> tlmAlarm.run
-      # Check our timers at 1Hz
-      rateGroup1.RateGroupMemberOut[6] -> tlmAlarmSeq.checkTimers
 
       # Rate group 2: 1/2Hz
       rateGroupDriver.CycleOut[Ports_RateGroups.rateGroup2] -> rateGroup2.CycleIn
@@ -145,9 +135,6 @@ module FprimeTlmAlarm {
       rateGroup3.RateGroupMemberOut[2] -> DataProducts.dpBufferManager.schedIn
       rateGroup3.RateGroupMemberOut[3] -> DataProducts.dpWriter.schedIn
       rateGroup3.RateGroupMemberOut[4] -> DataProducts.dpMgr.schedIn
-
-      # Dump telem @ 1/4Hz
-      rateGroup3.RateGroupMemberOut[5] -> tlmAlarmSeq.tlmWrite
     }
 
     connections CdhCore_cmdSeq {

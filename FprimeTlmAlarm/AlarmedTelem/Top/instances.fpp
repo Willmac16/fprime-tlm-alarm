@@ -46,10 +46,11 @@ module FprimeTlmAlarm {
     stack size Default.STACK_SIZE \
     priority 40
 
-  instance tlmAlarmSeq: Svc.FpySequencer base id 0x10005000 \
-    queue size Default.QUEUE_SIZE \
-    stack size Default.STACK_SIZE \
-    priority 39
+  # Not needed for direct monitoring approach - using C++ logic instead
+  # instance tlmAlarmSeq: Svc.FpySequencer base id 0x10005000 \
+  #   queue size Default.QUEUE_SIZE \
+  #   stack size Default.STACK_SIZE \
+  #   priority 39
 
   # ----------------------------------------------------------------------
   # Queued component instances
