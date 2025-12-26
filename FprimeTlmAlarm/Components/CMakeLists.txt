@@ -3,3 +3,4 @@
 # add_fprime_subdirectory("${CMAKE_CURRENT_LIST_DIR}/MyComponent")
 add_fprime_subdirectory("${CMAKE_CURRENT_LIST_DIR}/TlmSplitter/")
 add_fprime_subdirectory("${CMAKE_CURRENT_LIST_DIR}/TlmAlarm/")
+add_fprime_subdirectory("${CMAKE_CURRENT_LIST_DIR}/LttngProfiler/")
